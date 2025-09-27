@@ -21,6 +21,16 @@ const recipeSchema = new mongoose.Schema({
         type: [String],
         required: [true, "Instructions are required"],
     },
+    type: {
+        type: String,
+        enum: ["Veg", "Non-Veg"],
+        required: [true, "Recipe type is required"]
+    },
+    mealType: {
+        type: String,
+        enum: ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert", "Brunch"],
+        required: [true, "Meal type is required"]
+    },
     imageUrl: {
         type: String, // cloudinary imageUrl
         required: [true, "Recipe image is required"],
@@ -36,24 +46,6 @@ const recipeSchema = new mongoose.Schema({
             ref: "User"
         }
     ],
-    comments: [
-        {
-            user: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "User"
-                },
-            text: {
-                    type: String,
-                    required: [true, "Comment text is required"],
-                    maxLength: [300, "Comment cannot exceed 300 characters"]
-                },
-                createdAt: {
-                    type: Date,
-                    default: Date.now
-                }
-        }
-    ]
-
 }, { timestamps: true });
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
