@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -27,6 +30,10 @@ const userSchema = new mongoose.Schema({
         default: "Hey there! I love sharing recipes!🍳",
         maxLength: [150, "Bio cannot exceed 150 characters"]
     },
+    lastLogin: {
+        type: Date,
+        default : Date.now,
+    },
     savedRecipes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Recipe"
@@ -39,7 +46,7 @@ userSchema.pre('save', async function (next)  {
         return next();
     }
     try {
-        const salt = await bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(parseInt(process.env.GEN_SALT_KEY));
         this.password = await bcrypt.hash(this.password, salt);
         next();
     } catch (error) {
