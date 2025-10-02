@@ -1,6 +1,7 @@
 import express from 'express';
 import connectDB from './config/db.js';
 import authRoutes from "./routes/auth.route.js";
+import recipeRoutes from "./routes/recipe.route.js";
 
 const app = express();
 
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 8500;
 
 
 app.use("/api/auth", authRoutes);
+app.use("/api/recipes", recipeRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
